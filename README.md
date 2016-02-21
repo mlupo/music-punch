@@ -33,7 +33,7 @@ Really though, this project can be done on almost any microcontroller, as long a
 1. Initialize the pins corresponding to the light sensors as inputs.
 2. Set up a PWM pin to output to a speaker or piezo buzzer.
 3. Create a function which takes the pin receiving light, and then activates the piezo to play the corresponding note.
-4. Wrap this all up in a loop that checks to see which pins are full of light, and then act accordingly
+4. Wrap this all up in a loop that checks to see which pins are full of light, and then act accordingly.
 
 PLEASE NOTE THAT I AM NOT A PROGRAMMER, JUST AN ARTIST WHO HAPPENS TO WRITE CODE SOMETIMES... so I am always a little embarrassed over the quality of my coding.
 
