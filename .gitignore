@@ -10,6 +10,9 @@ old/
 *.blend2
 *.blend3
 
+main-midi.py
+midi.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
