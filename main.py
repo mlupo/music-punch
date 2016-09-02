@@ -6,7 +6,7 @@ servo.speed(0)
 
 # set up the on board switch, and itial volume
 SW = pyb.Switch()
-volume = 4
+volume = 5
 
 # each pin on the board is connected to a photo-resistor
 # which are mounted left-to-right in the device
@@ -21,6 +21,7 @@ SEVEN = pyb.Pin('B15', pyb.Pin.IN)
 OCTAVE_UP = pyb.Pin('B3', pyb.Pin.IN)
 
 PIN_LIST = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN]
+
 
 # all leds are powered from this pin
 LED = pyb.Pin("B1", pyb.Pin.OUT_PP)
@@ -53,86 +54,56 @@ G6 = 1568
 A6 = 1760
 B6 = 1976
 
-NOTE_LIST = [C5, D5, E5, F5, G5, A5, B5]
+NOTE_LIST = [C5, D5, E5, F5, G5, A5, B5, C6, D6, E6, F6, G6, A6, B6]
 
+#NOTE_DICT = {ONE:[C5,C6], TWO:[D5, D6], THREE:[E5, E6], FOUR:[F5, F6], FIVE: [G5, G6], SIX: [A5, A6], SEVEN: [B5, B6]}
 
-def play_note_digi(pin, note, vol=4, other_pins=PIN_LIST):
-    ''' This function will play the note associated with
-    a specific photo-resistor recieving light'''
-    # the selected note's frequency is selected
-    TIMER.freq(note)
-    start = pyb.millis()
-    if STOP_PIN.value() == ON:
-        # make sure the servo doesn't move
-        servo.speed(0)
-    while pyb.elapsed_millis(start) < 475:
-        # for the next 475 millis, we will check to see if
-        # the note needs to stop, and otherwise play the tune
-        halt_value = STOP_PIN.value()
-        light_value = pin.value()
-        if STOP_PIN.value() == OFF:
-            servo.speed(-11)
-        else:
-            servo.speed(0)
-        if (halt_value == OFF) and (light_value == ON):
-            # this is the only condition resulting in a played note
-            CHANNEL.pulse_width_percent(vol)
-            # print("playing")
-        elif light_value == OFF:
-            CHANNEL.pulse_width_percent(0)
-            break
-        elif halt_value == OFF:
-            CHANNEL.pulse_width_percent(0)
-            # print ("HALT has no light")
-            break
-        else:
-            CHANNEL.pulse_width_percent(0)
-            # print("nothing")
-            break
-            # print("off")
-    # pyb.delay(250)
-
-
-def pitch_shift(note):
-    ''' function to shift the pitch od ntoes up'''
-    if note == C5:
-        note = C6
-    elif note == E5:
-        note = E6
-    elif note == D5:
-        note = D6
-    elif note == F5:
-        note = F6
-    elif note == G5:
-        note = G6
-    elif note == A5:
-        note = A6
-    elif note == B5:
-        note = B6
+def pin_check():
+    number = None
+    if OCTAVE_UP.value() == ON:
+        scale = 7
     else:
-        return note
-    return note
-
+        scale = 0
+    for number, pins in enumerate(PIN_LIST):
+        if pins.value() == ON:
+            return NOTE_LIST[number + scale]
 
 # PROGRAM START ##########################
 
 LED.high()
 pyb.delay(100)
+playing_notes = []
+play_times = []
 
 while True:
-    pyb.delay(2)
-    for pins, notes in zip(PIN_LIST, NOTE_LIST):
-        # iterate over the pins, and play the corresponding note
-        if OCTAVE_UP.value() == ON:
-            play_note_digi(pins, pitch_shift(notes), volume)
-        elif pins.value() == ON:
-            # print(pins, notes)
-            play_note_digi(pins, notes, volume)
+    pyb.delay(45)
+    playing = STOP_PIN.value()
+    if playing == OFF:
+        servo.speed(-10)
+        note = pin_check()
+        if (note not in playing_notes) and (note != None):
+            TIMER.freq(note)
+            CHANNEL.pulse_width_percent(volume)
+            start = pyb.millis()
+            playing_notes.append(note)
+            play_times.append(start)
+        for times, dists in zip(play_times, playing_notes):
+            elapsed = pyb.elapsed_millis(times)
+            #if elapsed >= 50:
+            if dists != pin_check():
+                playing_notes.remove(dists)
+                play_times.remove(times)
+            if not playing_notes:
+                CHANNEL.pulse_width_percent(0)
+    else:
+        CHANNEL.pulse_width_percent(0)
+        servo.speed(0, 195)
+
 
     if SW() == True:
         volume += 1
         pyb.delay(200)
-        if volume > 8:
-            volume = 1
+        if volume > 9:
+            volume = 2
         print(volume)
 
