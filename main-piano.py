@@ -43,6 +43,13 @@ TIMER = pyb.Timer(2, freq=3000)
 CHANNEL = TIMER.channel(3, pyb.Timer.PWM_INVERTED,
                         pin=BUZZER)
 
+C4 = 60
+D4 = 62
+E4 = 64
+F4 = 65
+G4 = 67
+A4 = 69
+B4 = 71
 C5 = 72
 D5 = 74
 E5 = 76
@@ -50,15 +57,8 @@ F5 = 77
 G5 = 79
 A5 = 81
 B5 = 83
-C6 = 84
-D6 = 86
-E6 = 88
-F6 = 89
-G6 = 91
-A6 = 93
-B6 = 95
 
-NOTE_LIST = [C5, D5, E5, F5, G5, A5, B5, C6, D6, E6, F6, G6, A6, B6]
+NOTE_LIST = [C4, D4, E4, F4, G4, A4, B4, C5, D5, E5, F5, G5, A5, B5]
 
 
 class Boop:
@@ -115,13 +115,13 @@ pyb.delay(100)
 playing_notes = []
 play_times = []
 
-C_NOTE = Boop(C5, C6, ONE, NOTE_LIST, OCTAVE_UP)
-D_NOTE = Boop(D5, D6, TWO, NOTE_LIST, OCTAVE_UP)
-E_NOTE = Boop(E5, E6, THREE, NOTE_LIST, OCTAVE_UP)
-F_NOTE = Boop(F5, F6, FOUR, NOTE_LIST, OCTAVE_UP)
-G_NOTE = Boop(G5, G6, FIVE, NOTE_LIST, OCTAVE_UP)
-A_NOTE = Boop(A5, A6, SIX, NOTE_LIST, OCTAVE_UP)
-B_NOTE = Boop(B5, B6, SEVEN, NOTE_LIST, OCTAVE_UP)
+C_NOTE = Boop(C4, C5, ONE, NOTE_LIST, OCTAVE_UP)
+D_NOTE = Boop(D4, D5, TWO, NOTE_LIST, OCTAVE_UP)
+E_NOTE = Boop(E4, E5, THREE, NOTE_LIST, OCTAVE_UP)
+F_NOTE = Boop(F4, F5, FOUR, NOTE_LIST, OCTAVE_UP)
+G_NOTE = Boop(G4, G5, FIVE, NOTE_LIST, OCTAVE_UP)
+A_NOTE = Boop(A4, A5, SIX, NOTE_LIST, OCTAVE_UP)
+B_NOTE = Boop(B4, B5, SEVEN, NOTE_LIST, OCTAVE_UP)
 
 boop_list = [C_NOTE, D_NOTE, E_NOTE, F_NOTE, G_NOTE, A_NOTE, B_NOTE]
 

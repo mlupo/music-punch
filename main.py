@@ -56,7 +56,8 @@ B6 = 1976
 
 NOTE_LIST = [C5, D5, E5, F5, G5, A5, B5, C6, D6, E6, F6, G6, A6, B6]
 
-#NOTE_DICT = {ONE:[C5,C6], TWO:[D5, D6], THREE:[E5, E6], FOUR:[F5, F6], FIVE: [G5, G6], SIX: [A5, A6], SEVEN: [B5, B6]}
+#NOTE_DICT = {ONE:[C5,C6], TWO:[D5, D6], THREE:[E5, E6], FOUR:[F5, F6],
+#             FIVE: [G5, G6], SIX: [A5, A6], SEVEN: [B5, B6]}
 
 def pin_check():
     if OCTAVE_UP.value() == ON:
