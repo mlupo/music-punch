@@ -64,17 +64,20 @@ class Boop:
         self.off_counter = 0
         self.already_up = False
         self.octave = -1
+        self.octave_limit = len(note_range) - 1
         self.note = 0
-
-    def initiliazer(self):
-        self.state_clear()
-        self.note = 0
-        self.octave = -1
-        self.already_up = False
+#        self.note_2 = 0
 
     def state_clear(self):
         self.on_counter = 0
         self.off_counter = 0
+
+    def initiliazer(self):
+        self.state_clear()
+        self.note = 0
+#        self.note_2 = 0 #
+        self.octave = -1
+        self.already_up = False
 
     def note_check(self):
         if self.note_pin.value() == ON:
@@ -125,7 +128,7 @@ while True:
     pyb.delay(45)
     stopping = STOP_PIN.value()
     if stopping == OFF:
-        servo.speed(-8)
+        servo.speed(-9)
         #pyb.delay(5)
         if not command.check():
             if initial_check == 0:
@@ -135,30 +138,41 @@ while True:
                 previous_notes = current_notes
                 current_notes = []
                 initial_check = 1
+                print("initial_check complete")
             for boopers in boop_list:
                 boopers.note_check()
-                if boopers.on_counter >= 10:
+                #if boopers.note != 0:
+                #    print(boopers.note, "ON counter", boopers.on_counter)
+                if boopers.on_counter >= 9:
                     if not boopers.already_up:
                         boopers.octave += 1
-                        if boopers.octave > len(boopers.note_range):
-                            boopers.octave = len(boopers.note_range - 1)
+                        if boopers.octave > boopers.octave_limit:
+                            boopers.octave = boopers.octave_limit
+                        if boopers.octave > -1:
+                            boopers.note = boopers.note_range[boopers.octave]
+                        print(boopers.note, "octave:", boopers.octave)
                     boopers.state_clear()
-                if boopers.off_counter > 10 and boopers.octave > -1:
+                    boopers.already_up = True
+                if boopers.off_counter >= 2 and boopers.octave > -1:
+                    #if boopers.note != 0:
+                    #    print(boopers.note, "off long enough to turn back on")
                     boopers.already_up = False
 
         elif command.check():
             for booped in boop_list:
-                if booped.octave > -1:
-                    booped.note = booped.note_range[booped.octave]
-                    if (booped.note not in current_notes):
-                        print("on", boopers.note)
-                        midiout1.note_on(boopers.note)
-                        #pyb.delay(5)
+#                if booped.octave > -1:
+#                    booped.note = booped.note_range[booped.octave]
+                if (booped.note not in current_notes):
+                    if booped.note != 0:
+                        print("on", booped.note)
+                        midiout1.note_on(booped.note)
+                    #pyb.delay(5)
                         current_notes.append(booped.note)
                 for i in previous_notes:
                     if i not in current_notes:
                         print("off", i)
                         midiout1.note_off(i)
+                        previous_notes.remove(i)
                         #pyb.delay(5)
             initial_check = 0
 
@@ -167,7 +181,8 @@ while True:
             print("midi all notes off signal")
             midiout1.all_sound_off()
             print("remove all notes")
-            del playing_notes[:]
+            del current_notes[:]
+            del previous_notes[:]
             del play_times[:]
         if servo.speed() != 0:
             servo.speed(0, 800)

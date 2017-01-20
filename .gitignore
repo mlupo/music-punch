@@ -4,11 +4,13 @@ None.py
 boot.py
 main-no-comments.py
 old/
+midi/
 *.odt
 *.stl
 *.blend1
 *.blend2
 *.blend3
+*.gcode
 
 main-midi.py
 midi.py
