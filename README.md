@@ -25,6 +25,6 @@ This project has been extended to include an apparatus which plays an old chord 
 
 <img src=/assets/piano-player.JPG width="700"/>
 
-The "main-piano.py" file contains the code which reads the light sensors and outputs MIDI commands to a connected device.
+The "main-piano.py" file contains the code which reads the light sensors and outputs MIDI commands to a connected device. The MicroPython MIDI library used was this one [here](https://github.com/SpotlightKid/micropython-stm-lib/tree/master/midi/midi)
 To see this whole crazy thing in action, you can go here: [https://www.youtube.com/watch?v=mpJQyF-S-P0](https://www.youtube.com/watch?v=mpJQyF-S-P0), or check out the [blog post](https://maxlupo.com/beep-boopatronics/) for the project.
 
