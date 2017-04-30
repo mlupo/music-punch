@@ -7,20 +7,24 @@ This code is written for an [Espruino Pico](http://www.espruino.com/Pico), which
 
 ## Documentation
 
-<img src=/assets/beep-boop.JPG width="600"/>
+<img src=/assets/beep-boop.JPG width="700"/>
 
 Video of use: [https://www.youtube.com/watch?v=OQMbFPYHY8g](https://www.youtube.com/watch?v=OQMbFPYHY8g)
 
 For more pictures and and a pseudo how-to build guide, take a look at my [blog post](http://maxlupo.com/just-another-beep-boop-machine/) for this device.
 
 ###The Code
-As mentioned above, the code runs on a microcontroller running MicroPython, and the script can be found [here](https://github.com/mlupo/music-punch/blob/master/main.py). You just need to wire up the components to the pins outlined in the code (or equivalent for different boards), and upload the main.py onto your device.
 
-Really though, this project can be done on almost any microcontroller, as long as you write a script with similar logic. Basically, the main.py script just does this:
-
-1. Initialize the pins corresponding to the light sensors as inputs.
-2. Set up a PWM pin to output to a speaker or piezo buzzer.
-3. Create a function which takes the pin receiving light, and then activates the piezo to play the corresponding note.
-4. Wrap this all up in a loop that checks to see which pins are full of light, and then act accordingly.
+As mentioned above, the code runs on a microcontroller running **MicroPython**, and the script can be found [here](https://github.com/mlupo/music-punch/blob/master/main.py). You just need to wire up the components to the pins outlined in the code (or equivalent for different boards), and upload the main.py onto your device.
 
 PLEASE NOTE THAT I AM NOT A PROGRAMMER, JUST AN ARTIST WHO HAPPENS TO WRITE CODE SOMETIMES... so I am always a little embarrassed over the quality of my coding.
+
+# UPDATE
+
+This project has been extended to include an apparatus which plays an old chord organ.
+
+<img src=/assets/piano-player.JPG width="700"/>
+
+The "main-piano.py" file contains the code which reads the light sensors and outputs MIDI commands to a connected device.
+To see this whole crazy thing in action, you can go here: [https://www.youtube.com/watch?v=mpJQyF-S-P0](https://www.youtube.com/watch?v=mpJQyF-S-P0), or check out the [blog post](https://maxlupo.com/beep-boopatronics/) for the project.
+

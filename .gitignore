@@ -10,6 +10,8 @@ midi/
 *.blend1
 *.blend2
 *.blend3
+assets/apparatus1-1.blend2
+
 *.gcode
 
 main-midi.py
