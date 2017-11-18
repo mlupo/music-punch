@@ -56,25 +56,27 @@ B6 = 1976
 
 NOTE_LIST = [C5, D5, E5, F5, G5, A5, B5, C6, D6, E6, F6, G6, A6, B6]
 
-#NOTE_DICT = {ONE:[C5,C6], TWO:[D5, D6], THREE:[E5, E6], FOUR:[F5, F6],
-#             FIVE: [G5, G6], SIX: [A5, A6], SEVEN: [B5, B6]}
-
 def pin_check():
+    note_on = False
     if OCTAVE_UP.value() == ON:
         scale = 7
     else:
         scale = 0
     for number, pins in enumerate(PIN_LIST):
         if pins.value() == ON:
+            note_on = True
             return NOTE_LIST[number + scale]
+    if note_on == False:
+        return None
 
 # PROGRAM START ##########################
+
 
 LED.high()
 pyb.delay(100)
 playing_notes = []
 play_times = []
-
+playing_note = 0
 
 while True:
     pyb.delay(45)
@@ -82,37 +84,29 @@ while True:
     if playing == OFF:
         servo.speed(-10)
         note = pin_check()
-        if (note not in playing_notes) and (note in NOTE_LIST):
-            start = pyb.millis()
-            playing_notes.append(note)
-            play_times.append(start)
-            pyb.delay(25)
-            if note == pin_check():
+        if (note in NOTE_LIST):
+            pyb.delay(50)
+            if note == pin_check() and note != playing_note:
                 TIMER.freq(note)
                 CHANNEL.pulse_width_percent(volume)
-        for times, notes in zip(play_times, playing_notes):
-            elapsed = pyb.elapsed_millis(times)
-            #if elapsed >= 50:
-            if notes != pin_check():
-                playing_notes.remove(notes)
-                play_times.remove(times)
-            if not playing_notes:
-                CHANNEL.pulse_width_percent(0)
-        print(playing_notes)
+                playing_note = note
+        elif note is None:
+            CHANNEL.pulse_width_percent(0)
+            playing_note = 0
 
     else:
         if CHANNEL.pulse_width_percent() != 0.0:
             print("Volume Off")
             CHANNEL.pulse_width_percent(0)
         if servo.speed() != 0:
-            pyb.delay(200)
+            pyb.delay(295)
             servo.speed(0, 1100)
+            pyb.delay(1100)
+            servo.speed(0)
 
-
-    if SW() == True:
+    if SW():
         volume += 1
         pyb.delay(200)
         if volume > 9:
             volume = 2
         print(volume)
-

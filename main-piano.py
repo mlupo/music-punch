@@ -221,4 +221,3 @@ while True:
                 last_run = 0
             servo.speed(0, 850)
             pyb.delay(500)
-
